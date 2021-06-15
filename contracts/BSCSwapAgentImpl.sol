@@ -4,10 +4,10 @@ import "./interfaces/ISwap.sol";
 import "./bep20/BEP20UpgradeableProxy.sol";
 import './interfaces/IProxyInitialize.sol';
 import "openzeppelin-solidity/contracts/token/ERC20/SafeERC20.sol";
-import "openzeppelin-solidity/contracts/proxy/Initializable.sol";
+
 import "openzeppelin-solidity/contracts/GSN/Context.sol";
 
-contract  BSCSwapAgentImpl is Context, Initializable {
+contract  BSCSwapAgentImpl is Context {
 
 
     using SafeERC20 for IERC20;
@@ -26,7 +26,11 @@ contract  BSCSwapAgentImpl is Context, Initializable {
     event SwapStarted(address indexed bep20Addr, address indexed erc20Addr, address indexed fromAddr, uint256 amount, uint256 feeAmount);
     event SwapFilled(address indexed bep20Addr, bytes32 indexed ethTxHash, address indexed toAddress, uint256 amount);
 
-    constructor() public {
+    constructor(address bep20Impl, uint256 fee, address bep20ProxyAdminAddr) public {
+        bep20Implementation = bep20Impl;
+        swapFee = fee;
+        owner = _msgSender();
+        bep20ProxyAdmin = bep20ProxyAdminAddr;
     }
 
     /**
@@ -45,12 +49,6 @@ contract  BSCSwapAgentImpl is Context, Initializable {
 
 
 
-    function initialize(address bep20Impl, uint256 fee, address payable ownerAddr, address bep20ProxyAdminAddr) public initializer {
-        bep20Implementation = bep20Impl;
-        swapFee = fee;
-        owner = ownerAddr;
-        bep20ProxyAdmin = bep20ProxyAdminAddr;
-    }
 
     function isContract(address addr) internal view returns (bool) {
         uint size;

@@ -1,11 +1,11 @@
 pragma solidity 0.6.4;
 
 import "./interfaces/IERC20Query.sol";
-import "openzeppelin-solidity/contracts/proxy/Initializable.sol";
+
 import "openzeppelin-solidity/contracts/GSN/Context.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/SafeERC20.sol";
 
-contract ETHSwapAgentImpl is Context, Initializable {
+contract ETHSwapAgentImpl is Context {
 
     using SafeERC20 for IERC20;
 
@@ -19,7 +19,9 @@ contract ETHSwapAgentImpl is Context, Initializable {
     event SwapStarted(address indexed erc20Addr, address indexed fromAddr, uint256 amount, uint256 feeAmount);
     event SwapFilled(address indexed erc20Addr, bytes32 indexed bscTxHash, address indexed toAddress, uint256 amount);
 
-    constructor() public {
+    constructor(uint256 fee) public {
+        swapFee = fee;
+        owner = _msgSender();
     }
 
     /**
@@ -28,11 +30,6 @@ contract ETHSwapAgentImpl is Context, Initializable {
     modifier onlyOwner() {
         require(owner == _msgSender(), "Ownable: caller is not the owner");
         _;
-    }
-
-    function initialize(uint256 fee, address payable ownerAddr) public initializer {
-        swapFee = fee;
-        owner = ownerAddr;
     }
 
     modifier notContract() {
