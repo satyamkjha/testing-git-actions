@@ -27,7 +27,8 @@ let ethMaskAddr;
 let ethNetworkProvider;
 let bscNetworkProvider;
 
-const ethToBscSwapFee = ethers.utils.parseUnits('0.00000000001', 'ether');
+// TODO: get `swap fee` from contract
+const ethToBscSwapFee = ethers.utils.parseUnits('0.001', 'ether');
 const bscToEthSwapFee = ethers.utils.parseUnits('0.01', 'ether');
 
 //----------------------------------------
@@ -44,7 +45,8 @@ const bscTransactionParameters = {
 };
 //------------------------------------------------------------------------------------------------
 // const network = "testnet";
-const network = "rinkeby";
+// const network = "rinkeby";
+const network = "mainnet";
 
 async function main() {
     if (network === "mainnet") {
@@ -54,7 +56,9 @@ async function main() {
         ethMaskAddr = "0x69af81e73a73b40adf4f3d4223cd9b1ece623074";
         // set gas price carefully, it is expensive.
         ethTransactionParameters.gasLimit = 1000000;
-        ethTransactionParameters.gasPrice = ethers.utils.parseUnits('10', 'gwei');
+        // ethTransactionParameters.nonce = 1;
+        // TODO: get real-time gas fee
+        ethTransactionParameters.gasPrice = ethers.utils.parseUnits('15', 'gwei');
         bscTransactionParameters.gasPrice = ethers.utils.parseUnits('5', 'gwei');
         ethNetworkProvider = new ethers.providers.JsonRpcProvider("https://mainnet.infura.io/v3/" + process.env.INFURA_API_KEY);
         bscNetworkProvider = new ethers.providers.StaticJsonRpcProvider('https://bsc-dataseed1.binance.org:443');

@@ -85,5 +85,26 @@ npm run coverage
 
 ## Interact with deployed contract
 
-To interact with these smart contract, you can use web interfaces, like [etherscan](https://etherscan.io/address/0xD25d84B989bFaFC2C77aB1d4FA1a04FC0eea9D24#readContract).
+To interact with these smart contract, you can use web interfaces.
+
+### Swap ETH MASK -> BSC MASK
+
+[etherscan](https://etherscan.io/address/0xD25d84B989bFaFC2C77aB1d4FA1a04FC0eea9D24#readContract) - `swapETH2BSC`: use these parameters:
+```
+0.001                 // payableAmont
+0x69af81e73a73b40adf4f3d4223cd9b1ece623074       // MASK token address
+1000000000000000000              // amount, 1 MASK token
+```
+
+### Swap BSC MASK -> ETH MASK
+
+[bscscan](https://bscscan.com/address/0x05ee315E407C21a594f807D61d6CC11306D1F149#writeContract) - `swapBSC2ETH` : use these parameters:
+NOTE: you need to approve `BSC Swap Agent` MASK token allowance beforehand, see [script](./utils/bridge_tools.md) for more details.
+
+```
+0.01            // payableAmont
+0x2ed9a5c8c13b93955103b9a7c167b67ef4d568a3       // MASK token address
+1000000000000000000              // amount, 1 MASK token
+```
+
 Besides, this [script](./utils/bridge_tools.md) might make make your life easier.
