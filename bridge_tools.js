@@ -1,5 +1,6 @@
 require("dotenv").config();
 const ethers = require("ethers");
+const utils = require('./utils.js');
 
 // TODO: organize these into a config file
 const ethContractArtifact = require("./utils/abi/ETHSwapAgentImpl.json");
@@ -27,10 +28,6 @@ let ethMaskAddr;
 let ethNetworkProvider;
 let bscNetworkProvider;
 
-// TODO: get `swap fee` from contract
-const ethToBscSwapFee = ethers.utils.parseUnits('0.001', 'ether');
-const bscToEthSwapFee = ethers.utils.parseUnits('0.01', 'ether');
-
 //----------------------------------------
 const ethTransactionParameters = {
     gasLimit: 300000,
@@ -55,10 +52,12 @@ async function main() {
         bscMaskAddr = "0x2ed9a5c8c13b93955103b9a7c167b67ef4d568a3";
         ethMaskAddr = "0x69af81e73a73b40adf4f3d4223cd9b1ece623074";
         // set gas price carefully, it is expensive.
-        ethTransactionParameters.gasLimit = 1000000;
         // ethTransactionParameters.nonce = 1;
-        // TODO: get real-time gas fee
-        ethTransactionParameters.gasPrice = ethers.utils.parseUnits('15', 'gwei');
+        // ethTransactionParameters.gasPrice = ethers.utils.parseUnits('25', 'gwei');
+        const gasPriceList = await utils.getGasPrice(false);
+        console.log("www.gasnow.org standard gas price: " + ethers.utils.formatUnits(gasPriceList.standard, 'gwei') + " Gwei");
+        ethTransactionParameters.gasPrice = gasPriceList.standard;
+        // console.log("ethTransactionParameters.gasPrice: " + ethTransactionParameters.gasPrice.toString());
         bscTransactionParameters.gasPrice = ethers.utils.parseUnits('5', 'gwei');
         ethNetworkProvider = new ethers.providers.JsonRpcProvider("https://mainnet.infura.io/v3/" + process.env.INFURA_API_KEY);
         bscNetworkProvider = new ethers.providers.StaticJsonRpcProvider('https://bsc-dataseed1.binance.org:443');
@@ -160,7 +159,8 @@ async function main() {
             throw "invalid parametrer";
         }
         const amount = process.argv[3];
-        ethTransactionParameters.value = ethToBscSwapFee;
+        ethTransactionParameters.value = await ethContractApp.swapFee();
+        console.log("Mask swap fee: " + ethers.utils.formatUnits(ethTransactionParameters.value.toString(), 18) + " ETH");
         const maskSwapAmount = ethers.utils.parseUnits(amount, 18);
         console.log("Mask swap amount: " + amount);
         const tx = await ethContractApp.swapETH2BSC(ethMaskAddr, maskSwapAmount.toString(), ethTransactionParameters);
@@ -201,8 +201,8 @@ async function main() {
             throw "invalid parametrer";
         }
         const amount = process.argv[3];
-
-        bscTransactionParameters.value = bscToEthSwapFee;
+        bscTransactionParameters.value = await bscContractApp.swapFee();
+        console.log("Mask swap fee: " + ethers.utils.formatUnits(bscTransactionParameters.value.toString(), 18) + " BNB");
         const maskSwapAmount = ethers.utils.parseUnits(amount, 18);
         console.log("Mask swap amount: " + ethers.utils.formatUnits(maskSwapAmount.toString(), 18));
         const tx = await bscContractApp.swapBSC2ETH(bscMaskAddr, maskSwapAmount.toString(), bscTransactionParameters);
@@ -260,7 +260,8 @@ async function main() {
     }
     else if (action === "stress_test_eth_2_bsc")
     {
-        ethTransactionParameters.value = ethToBscSwapFee;
+        ethTransactionParameters.value = await ethContractApp.swapFee();
+        console.log("Mask swap fee: " + ethers.utils.formatUnits(ethTransactionParameters.value.toString(), 18) + " ETH");
         // stress test
         const startMaskAmont = ethers.utils.parseUnits("0.1", 18);
         const incrementAmont = ethers.utils.parseUnits("0.1", 18);
