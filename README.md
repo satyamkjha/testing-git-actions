@@ -65,23 +65,24 @@ npm run coverage
 | Chain | Address |
 | ----- | ------- |
 | Mainnet | [0xD25d84B9](https://etherscan.io/address/0xD25d84B989bFaFC2C77aB1d4FA1a04FC0eea9D24) |
-| Ropsten | [0xfd7F535F](https://ropsten.etherscan.io/address/0xfd7F535F3268D5e4FB7f756a617f3B8616f5B03A) |
-| Rinkeby | [0xef87BcCB](https://rinkeby.etherscan.io/address/0xef87BcCB69Be08B089994F27D53Fcd23Dc6D075d) |
+| ~~Ropsten~~ | [0xfd7F535F](https://ropsten.etherscan.io/address/0xfd7F535F3268D5e4FB7f756a617f3B8616f5B03A) |
+| Rinkeby | [0xBfF86b02](https://rinkeby.etherscan.io/address/0xBfF86b0234CCe74FDCb9C8897b2e33f385dfA83D) |
 
+NOTE: Ropsten is broken.
 
 ### BSC Swap Agent
 
 | Chain | Address |
 | ----- | ------- |
 | BSC | [0x05ee315E](https://bscscan.com/address/0x05ee315E407C21a594f807D61d6CC11306D1F149) |
-| BSC-testnet | [0x6F300207](https://testnet.bscscan.com/address/0x2eD9a5C8C13b93955103B9a7C167B67Ef4d568a3) |
+| BSC-testnet | [0xc0145645](https://testnet.bscscan.com/address/0xc01456454c10E8118BbD069edc8DcFa66bCCA96F) |
 
 ### BSC-MASK-token
 
 | Chain | Address |
 | ----- | ------- |
 | BSC | [0x2eD9a5C8](https://bscscan.com/address/0x2eD9a5C8C13b93955103B9a7C167B67Ef4d568a3) |
-| BSC-testnet | [0x2eD9a5C8](https://testnet.bscscan.com/address/0x2eD9a5C8C13b93955103B9a7C167B67Ef4d568a3) |
+| BSC-testnet | [0x9ae8f356](https://testnet.bscscan.com/address/0x9ae8f356db5448ffbc8e3496ff8ca85536fc6031) |
 
 ## Interact with deployed contract
 
